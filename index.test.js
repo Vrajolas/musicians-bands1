@@ -96,4 +96,35 @@ describe('Band and Musician Models', () => {
         expect(songs[0].Band.name).toBe('The Beatles');
         expect(songs[1].Band.name).toBe('The Beatles');
     });
+
+    test('can eager load musicians and songs for a band', async () => {
+        const band = await Band.create({
+          name: 'The Beatles',
+          genre: 'Rock',
+        });
+    
+        const musician1 = await Musician.create({
+          name: 'John Lennon',
+          instrument: 'Guitar',
+        });
+    
+        const musician2 = await Musician.create({
+          name: 'Paul McCartney',
+          instrument: 'Bass',
+        });
+    
+        const song1 = await Song.create({
+          title: 'Hey Jude',
+          year: 1968,
+        });
+    
+        const song2 = await Song.create({
+          title: 'Let It Be',
+          year: 1970,
+        });
+
+        const bands = await Band.findAll({
+            include: [Musician, Song],
+        });
+    })
 })
